@@ -5,10 +5,11 @@ import styles from "./index.module.css";
 export default function Home() {
   const [questionInput, setQuestionInput] = useState("");
   const [conversation, setConversation] = useState("");
-
+  
   async function onSubmit(event) {
     event.preventDefault();
     try {
+      setConversation(`${conversation}<div><span>Human:</span> ${questionInput}</div>`);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -22,7 +23,7 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setConversation(`${conversation}<div>Human: ${questionInput}</div><div>AI: ${data.result}</div>`);
+      setConversation(`${conversation}<div><span>Human:</span> ${questionInput}</div><div><span>AI:</span>${data.result}</div>`);
       setQuestionInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -41,15 +42,14 @@ export default function Home() {
       <main className={styles.main}>
         <h3>Test</h3>
         <form onSubmit={onSubmit}>
-          <textarea
+          <input
             type="text"
             name="question"
             placeholder="Ask a question"
             value={questionInput}
             onChange={(e) => setQuestionInput(e.target.value)}
-          >
-          </textarea>
-          <input type="submit" value="answer" />
+          />
+          <input type="submit" value="Answer" />
         </form>
         <div className={styles.response} dangerouslySetInnerHTML={{__html: conversation}}></div>
       </main>
