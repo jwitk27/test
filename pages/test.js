@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 
-export default function Home() {
+export default function Test() {
   const [questionInput, setQuestionInput] = useState("");
   const [conversation, setConversation] = useState("");
   
@@ -16,7 +16,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: questionInput, conversation: conversation })
+        body: JSON.stringify({ question: questionInput })
       });
 
       const data = await response.json();
@@ -30,6 +30,13 @@ export default function Home() {
       // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
+    }
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.currentTarget.submit();
     }
   }
 
@@ -49,6 +56,7 @@ export default function Home() {
             name="question"
             placeholder="Ask a question"
             value={questionInput}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setQuestionInput(e.target.value)}
           />
         </form>

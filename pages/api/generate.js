@@ -14,7 +14,7 @@ export default async function (req, res) {
         });
         return;
     }
-    let conversation = '';
+    let conversation = req.body.conversation || "";
     const question = req.body.question || "";
     conversation += 'Input: ' + question + '\n\n' + 'AI: ';
 
@@ -30,12 +30,12 @@ export default async function (req, res) {
     try {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: 'Conversation History: ' + conversation,
-            temperature: 0.9,
-            max_tokens: 150,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0.6,
+            prompt: `
+                Use the conversation history to reference anything previously discussed with the user. Answer any new inputs to the best of your ability. Be polite and creative, provide insight, try to be accurate.
+                Conversation History: ${conversation}
+            `,
+            temperature: 0.6,
+            max_tokens: 150
         });
         conversation += 'AI: ' + completion.data.choices[0].text + '\n\n';
         res.status(200).json({ result: completion.data.choices[0].text });
