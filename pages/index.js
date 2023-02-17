@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [questionInput, setQuestionInput] = useState("");
-  const [htmlString, setHtmlString] = useState("");
+  const [conversation, setConversation] = useState("");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -14,7 +14,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: questionInput, html: htmlString.replace(/\n/g, '').replace(/\s*(<[^>]*>)/g, '$1') })
+        body: JSON.stringify({ question: questionInput })
       });
 
       const data = await response.json();
@@ -22,7 +22,7 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setHtmlString(data.result);
+      setConversation(`${conversation}<div>Human: ${questionInput}</div><div>AI: ${data.result}</div>`);
       setQuestionInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -34,12 +34,12 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
+        <title>Test</title>
         <link rel="icon" href="/dog.png" />
       </Head>
 
       <main className={styles.main}>
-        <h3>ChatGPT</h3>
+        <h3>Test</h3>
         <form onSubmit={onSubmit}>
           <textarea
             type="text"
@@ -49,9 +49,9 @@ export default function Home() {
             onChange={(e) => setQuestionInput(e.target.value)}
           >
           </textarea>
-          <input type="submit" value="Answer" />
+          <input type="submit" value="answer" />
         </form>
-        <div dangerouslySetInnerHTML={{ __html: htmlString }}></div>
+        <div className={styles.response} dangerouslySetInnerHTML={{__html: conversation}}></div>
       </main>
     </div>
   );

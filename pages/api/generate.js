@@ -14,9 +14,10 @@ export default async function (req, res) {
         });
         return;
     }
-
+    let conversation = '';
     const question = req.body.question || "";
-    const html = req.body.html || "";
+    conversation += 'Input: ' + question + '\n\n' + 'AI: ';
+
     if (question.trim().length === 0) {
         res.status(400).json({
             error: {
@@ -29,16 +30,14 @@ export default async function (req, res) {
     try {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: `
-      make this update to the original HTML:
-      Update: ${question}
-      Original HTML: ${html}
-      Updated HTML: 
-      note: only respond with updated HTML. If the original HTML is blank, just create new html for the Update request.
-      `,
-            temperature: 0.5,
-            max_tokens: 2048,
+            prompt: 'Conversation History: ' + conversation,
+            temperature: 0.9,
+            max_tokens: 150,
+            top_p: 1,
+            frequency_penalty: 0,
+            presence_penalty: 0.6,
         });
+        conversation += 'AI: ' + completion.data.choices[0].text + '\n\n';
         res.status(200).json({ result: completion.data.choices[0].text });
     } catch (error) {
         // Consider adjusting the error handling logic for your use case
@@ -55,11 +54,3 @@ export default async function (req, res) {
         }
     }
 }
-const svg = document.querySelector("svg");
-let x = 0;
-function moveSVG() {
-    svg.style.transform = `translateX(${x}px)`;
-    x += 10;
-    setTimeout(moveSVG, 100);
-}
-moveSVG();
