@@ -16,6 +16,7 @@ export default async function (req, res) {
     }
     let conversation = req.body.conversation || "";
     const question = req.body.question || "";
+    const prompt = req.body.prompt || "";
 
     if (question.trim().length === 0) {
         res.status(400).json({
@@ -30,7 +31,7 @@ export default async function (req, res) {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: `
-                Use the conversation history to reference anything previously discussed with the user. Answer any new inputs to the best of your ability. Be polite and creative, provide insight, try to be accurate.
+                ${prompt}
                 Conversation History: ${conversation.map(message => `${message.context}: ${message.content}`).join('\n')} New Input: ${question} \n AI:
             `,
             temperature: 0.6,

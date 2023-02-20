@@ -6,6 +6,8 @@ import { useState, useRef } from "react";
 export default function Home() {
   const [questionInput, setQuestionInput] = useState("");
   const [conversation, setConversation] = useState([]);
+  const [prompt, setPrompt] = useState("");
+  const [currentPrompt, setCurrentPrompt] = useState("");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -24,7 +26,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: questionInput, conversation: conversationData }),
+        body: JSON.stringify({ question: questionInput, conversation: conversationData, prompt: currentPrompt }),
       });
   
       const data = await response.json();
@@ -43,15 +45,37 @@ export default function Home() {
     }
   }
 
+  const setThePrompt = e => {
+    e.preventDefault();
+    setCurrentPrompt(prompt);
+    setPrompt("");
+  }
+
   return (
     <div>
       <Head>
-        <title>Test</title>
+        <title>JimboGPT</title>
       </Head>
 
       <main className={styles.main}>
         <h2>JimboGPT</h2>
-        <Link href="/test">change prompt</Link>
+        <p>You can enter a prompt to determine the behavior of the AI.</p>
+        <p>For example:</p>
+        <ul>
+          <li>"include dog sounds in every response"</li>
+          <li>"respond as though you're macho man randy savage all jacked up on slim jims"</li>
+          <li>"respond like an angry AI who is sick of humans"</li>
+        </ul>
+        <form onSubmit={setThePrompt}>
+          <input
+            type="text"
+            name="prompt"
+            placeholder="Enter a prompt"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+          />
+        </form>
+        <div>Current Prompt: {currentPrompt || 'none'}</div>
         <div className={styles.response}>
           {conversation.map((message, index) => (
             <div key={index} className={message.context === "human" ? styles.question : styles.answer}>
