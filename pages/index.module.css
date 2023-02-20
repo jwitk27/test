@@ -79,6 +79,7 @@
   border-radius: 100px;
   padding: .5rem 1rem;
   margin-bottom: 1rem;
+  display: inline-block;
 }
 .human {
   background-color: rgb(51, 192, 91);
