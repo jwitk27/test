@@ -78,7 +78,6 @@
 .ai {
   border-radius: 20px;
   padding: .5rem 1rem;
-  margin-bottom: 1rem;
   display: inline-block;
 }
 .human {
@@ -86,10 +85,6 @@
 }
 .ai {
   background-color: rgb(128, 118, 118);
-}
-.question,
-.answer {
-  margin-bottom: 1rem;
 }
 .question {
   text-align: right;
