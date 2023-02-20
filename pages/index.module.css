@@ -76,7 +76,7 @@
 }
 .human,
 .ai {
-  border-radius: 100px;
+  border-radius: 20px;
   padding: .5rem 1rem;
   margin-bottom: 1rem;
   display: inline-block;
