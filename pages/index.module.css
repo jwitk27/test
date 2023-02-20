@@ -31,10 +31,7 @@
   width: 80%;
   margin: 0 auto;
   max-width: 1000px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 100%;
 }
 .main .icon {
   width: 34px;
@@ -64,13 +61,18 @@
 }
 .main p {
   margin: 0;
+  text-align: left;
+}
+.main ul {
+  text-align: left;
+  margin: 1rem 0;
+  padding: 0;
 }
 .response {
   width: 100%;
   background-color: #333;
   color: #fff;
   padding: 1rem;
-  margin-bottom: 1rem;
   border-radius: 5px;
   height: 60vh;
   overflow-y: scroll;

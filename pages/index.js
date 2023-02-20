@@ -46,6 +46,7 @@ export default function Home() {
   }
 
   const setThePrompt = e => {
+    setConversation([]);
     e.preventDefault();
     setCurrentPrompt(prompt);
     setPrompt("");
@@ -59,23 +60,6 @@ export default function Home() {
 
       <main className={styles.main}>
         <h2>JimboGPT</h2>
-        <p>You can enter a prompt to determine the behavior of the AI.</p>
-        <p>For example:</p>
-        <ul>
-          <li>"include dog sounds in every response"</li>
-          <li>"respond as though you're macho man randy savage all jacked up on slim jims"</li>
-          <li>"respond like an angry AI who is sick of humans"</li>
-        </ul>
-        <form onSubmit={setThePrompt}>
-          <input
-            type="text"
-            name="prompt"
-            placeholder="Enter a prompt"
-            value={prompt}
-            onChange={e => setPrompt(e.target.value)}
-          />
-        </form>
-        <div>Current Prompt: {currentPrompt || 'none'}</div>
         <div className={styles.response}>
           {conversation.map((message, index) => (
             <div key={index} className={message.context === "human" ? styles.question : styles.answer}>
@@ -85,6 +69,7 @@ export default function Home() {
             </div>
           ))}
         </div>
+        <div>Current Prompt: {currentPrompt || 'none'}</div>
         <form onSubmit={onSubmit}>
           <input
             type="text"
@@ -92,6 +77,25 @@ export default function Home() {
             placeholder="Ask a question"
             value={questionInput}
             onChange={(e) => setQuestionInput(e.target.value)}
+          />
+        </form>
+        <p>You can enter a prompt below to determine the behavior of the AI.</p>
+        <p>*note: changing the prompt will reset the conversation</p>
+        <ul>
+        For example:
+          <li>"Include dog sounds in every response"</li>
+          <li>"respond with rhyming messages only"</li>
+          <li>"Respond like you're Macho Man Randy Savage jacked up on Slim Jims!"</li>
+          <li>"Respond like an angry AI who is sick of humans"</li>
+          <li>"Respond in the style of a questgiver in a fantasy rpg game"</li>
+        </ul>
+        <form onSubmit={setThePrompt}>
+          <input
+            type="text"
+            name="prompt"
+            placeholder="Enter a prompt"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
           />
         </form>
       </main>
