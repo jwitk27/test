@@ -71,14 +71,25 @@
   border-radius: 5px;
   height: 70vh;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
 }
-.response span {
-  position: absolute;
+.human,
+.ai {
+  border-radius: 100px;
+  padding: .5rem 1rem;
+  margin-bottom: 1rem;
+}
+.human {
+  background-color: rgb(51, 192, 91);
+}
+.ai {
+  background-color: rgb(128, 118, 118);
+}
+.question,
+.answer {
+  margin-bottom: 1rem;
+}
+.question {
   text-align: right;
-  width: 70px;
-  left: -80px;
-}
-.response div {
-  position: relative;
-  margin-left: 75px;
 }
