@@ -16,8 +16,6 @@ export default async function (req, res) {
     }
     let conversation = req.body.conversation || "";
     const question = req.body.question || "";
-    conversation = conversation.map(message => `${message.context}: ${message.content}`).join('\n');
-    conversation += 'Input: ' + question + '\n\n' + 'AI: ';
 
     if (question.trim().length === 0) {
         res.status(400).json({
@@ -33,12 +31,11 @@ export default async function (req, res) {
             model: "text-davinci-003",
             prompt: `
                 Use the conversation history to reference anything previously discussed with the user. Answer any new inputs to the best of your ability. Be polite and creative, provide insight, try to be accurate.
-                Conversation History: ${conversation}
+                Conversation History: ${conversation.map(message => `${message.context}: ${message.content}`).join('\n')} New Input: ${question} \n AI:
             `,
             temperature: 0.6,
             max_tokens: 150
         });
-        conversation += 'AI: ' + completion.data.choices[0].text + '\n\n';
         res.status(200).json({ result: completion.data.choices[0].text });
     } catch (error) {
         // Consider adjusting the error handling logic for your use case
