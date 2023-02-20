@@ -16,6 +16,7 @@ export default async function (req, res) {
     }
     let conversation = req.body.conversation || "";
     const question = req.body.question || "";
+    conversation = conversation.map(message => `${message.context}: ${message.content}`).join('\n');
     conversation += 'Input: ' + question + '\n\n' + 'AI: ';
 
     if (question.trim().length === 0) {
