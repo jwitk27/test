@@ -51,6 +51,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h2>JimboGPT</h2>
+        <Link href="/test">change prompt</Link>
         <div className={styles.response}>
           {conversation.map((message, index) => (
             <div key={index} className={message.context === "human" ? styles.question : styles.answer}>

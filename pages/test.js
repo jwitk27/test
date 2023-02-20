@@ -6,6 +6,7 @@ import { useState, useRef } from "react";
 export default function Home() {
   const [questionInput, setQuestionInput] = useState("");
   const [conversation, setConversation] = useState([]);
+  const [prompt, setPrompt] = useState("");
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -19,12 +20,12 @@ export default function Home() {
   
       setConversation(conversationData);
   
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/changeprompt", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: questionInput, conversation: conversationData }),
+        body: JSON.stringify({ question: questionInput, conversation: conversationData, prompt: prompt }),
       });
   
       const data = await response.json();
@@ -50,11 +51,23 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Link href="/test">Go to Code Page</Link>
+        <h2>JimboGPT</h2>
+        <Link href="/">default prompt</Link>
+        <form>
+          <input
+            type="text"
+            name="prompt"
+            placeholder="Enter a prompt"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+          />
+        </form>
         <div className={styles.response}>
           {conversation.map((message, index) => (
-            <div key={index} className={message.context === "human" ? styles.human : styles.ai}>
-              {message.content}
+            <div key={index} className={message.context === "human" ? styles.question : styles.answer}>
+              <span className={message.context === "human" ? styles.human : styles.ai}>
+                {message.content}
+              </span>
             </div>
           ))}
         </div>
