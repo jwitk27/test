@@ -12,7 +12,7 @@ export default function Test() {
     try {
       setQuestionInput("");
       setConversation(`${conversation}<div><span>Human:</span> ${questionInput}</div>`);
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/code", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
