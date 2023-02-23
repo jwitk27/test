@@ -8,6 +8,7 @@ export default function Home() {
   const [conversation, setConversation] = useState([]);
   const [prompt, setPrompt] = useState("");
   const [currentPrompt, setCurrentPrompt] = useState("");
+  const [currentUser, setCurrentUser] = useState(0);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -36,6 +37,8 @@ export default function Home() {
   
       const aiResponse = { content: data.result, className: "ai-message", context: "ai" };
   
+      setCurrentUser(currentUser)
+
       // Update the conversation state with the AI response
       setConversation([aiResponse, ...conversationData]);
     } catch(error) {
@@ -60,7 +63,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h2>JimboGPT</h2>
-        <Link href="/test">Have the AI talk to itself</Link>
+        <Link href="/">Back to Home</Link>
         <div className={styles.response}>
           {conversation.map((message, index) => (
             <div key={index} className={message.context === "human" ? styles.question : styles.answer}>
@@ -70,26 +73,9 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div>Current Prompt: {currentPrompt || 'none'}</div>
-        <form onSubmit={onSubmit}>
-          <input
-            type="text"
-            name="question"
-            placeholder="Ask a question"
-            value={questionInput}
-            onChange={(e) => setQuestionInput(e.target.value)}
-          />
-        </form>
-        <p>You can enter a prompt below to determine the behavior of the AI.</p>
-        <p>*note: changing the prompt will reset the conversation</p>
-        <ul>
-        For example:
-          <li>"Include dog sounds in every response"</li>
-          <li>"respond with rhyming messages only"</li>
-          <li>"Respond like you're Macho Man Randy Savage jacked up on Slim Jims!"</li>
-          <li>"Respond like an angry AI who is sick of humans"</li>
-          <li>"Respond in the style of a questgiver in a fantasy rpg game"</li>
-        </ul>
+        <div>Current Topic: {currentPrompt || 'none'}</div>
+        <button className={styles.button} onClick={onSubmit}>Start Conversation</button>
+        <p>Choose a topic for the AIs to discuss:</p>
         <form onSubmit={setThePrompt}>
           <input
             type="text"

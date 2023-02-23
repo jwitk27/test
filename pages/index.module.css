@@ -96,3 +96,12 @@
 .question {
   text-align: right;
 }
+.button {
+  background-color: green;
+  padding: 10px;
+  border: 0;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 3px;
+  margin: 1rem;
+}
