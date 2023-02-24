@@ -1,33 +1,22 @@
 import Head from "next/head";
 import styles from "./index.module.css";
 import Link from 'next/link';
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export default function Home() {
-  const [questionInput, setQuestionInput] = useState("");
   const [conversation, setConversation] = useState([]);
   const [prompt, setPrompt] = useState("");
   const [currentPrompt, setCurrentPrompt] = useState("");
-  const [currentUser, setCurrentUser] = useState(0);
 
-  async function onSubmit(event) {
-    event.preventDefault();
+  async function conversate() {
     try {
-      setQuestionInput("");
   
-      const humanQuestion = { content: questionInput, className: "human-message", context: "human" };
-  
-      // Create a new conversation array with the updated message
-      const conversationData = [humanQuestion, ...conversation];
-  
-      setConversation(conversationData);
-  
-      const response = await fetch("/api/generate", {
+      const response = await fetch("/api/talkToYourself", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ question: questionInput, conversation: conversationData, prompt: currentPrompt }),
+        body: JSON.stringify({ conversation: conversation, prompt: currentPrompt }),
       });
   
       const data = await response.json();
@@ -35,12 +24,13 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
   
-      const aiResponse = { content: data.result, className: "ai-message", context: "ai" };
-  
-      setCurrentUser(currentUser)
+      setConversation([data.result, ...conversation]);
 
-      // Update the conversation state with the AI response
-      setConversation([aiResponse, ...conversationData]);
+      console.log(conversation);
+
+      setTimeout(() => {
+        conversate();
+      }, 1000);
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -49,7 +39,6 @@ export default function Home() {
   }
 
   const setThePrompt = e => {
-    setConversation([]);
     e.preventDefault();
     setCurrentPrompt(prompt);
     setPrompt("");
@@ -74,7 +63,7 @@ export default function Home() {
           ))}
         </div>
         <div>Current Topic: {currentPrompt || 'none'}</div>
-        <button className={styles.button} onClick={onSubmit}>Start Conversation</button>
+        <button className={styles.button} onClick={conversate}>Start Conversation</button>
         <p>Choose a topic for the AIs to discuss:</p>
         <form onSubmit={setThePrompt}>
           <input

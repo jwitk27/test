@@ -6,6 +6,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
+
     if (!configuration.apiKey) {
         res.status(500).json({
             error: {
@@ -14,27 +15,16 @@ export default async function (req, res) {
         });
         return;
     }
-    let conversation = req.body.conversation || "";
-    const question = req.body.question || "";
-    const prompt = req.body.prompt || "";
-    let currentUser = req.body.prompt || "";
 
-    if (question.trim().length === 0) {
-        res.status(400).json({
-            error: {
-                message: "Please enter a valid question",
-            },
-        });
-        return;
-    }
+    let conversation = req.body.conversation || "";
+    const prompt = req.body.prompt || "";
 
     try {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: `
                 Discuss the following topic: ${prompt}
-                You are ${currentUser}
-                Conversation History: ${conversation.map(message => `${message.context}: ${message.content}`).join('\n')} New Input: ${question} \n AI:
+                Conversation History: ${conversation}
             `,
             temperature: 0.6,
             max_tokens: 150
