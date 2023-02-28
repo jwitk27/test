@@ -18,12 +18,14 @@ export default async function (req, res) {
 
     let conversation = req.body.conversation || "";
     const prompt = req.body.prompt || "";
+    const user = req.body.user || "";
 
     try {
         const completion = await openai.createCompletion({
             model: "text-davinci-003",
             prompt: `
                 Discuss the following topic: ${prompt}
+                Continue the conversation (if there is conversation history). If there is no conversation history, ask one question or say one statement. All additional responses should be 1 question or 1 statement.
                 Conversation History: ${conversation}
             `,
             temperature: 0.6,
