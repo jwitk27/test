@@ -19,7 +19,7 @@ export default function Home() {
             const humanQuestion = { role: "user", content: questionInput };
 
             // Create a new conversation array with the updated message
-            const conversationData = [humanQuestion, ...conversation];
+            const conversationData = [...conversation, humanQuestion];
 
             setConversation(conversationData);
 
@@ -42,7 +42,7 @@ export default function Home() {
             const aiResponse = data.result;
 
             // Update the conversation state with the AI response
-            setConversation([aiResponse, ...conversationData]);
+            setConversation([...conversationData, aiResponse]);
         } catch (error) {
             // Consider implementing your own error handling logic here
             console.error(error);
