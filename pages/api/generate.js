@@ -18,10 +18,6 @@ export default async function (req, res) {
     const question = req.body.question || "";
     const prompt = req.body.prompt || "";
 
-    console.log(conversation);
-    console.log(question);
-    console.log(prompt);
-
     if (question.trim().length === 0) {
         res.status(400).json({
             error: {

@@ -66,12 +66,12 @@ export default function Home() {
             <main className={styles.main}>
                 <h2>JimboGPT</h2>
                 <div className={styles.response}>
-                  {loadingResponse ? <div className={styles.answer}><span className={styles.ai}>...</span></div> : ""}
                     {conversation.map((message, index) => (
                         <div key={index} className={message.role === "user" ? styles.question : styles.answer}>
                             <span className={message.role === "user" ? styles.human : styles.ai}>{message.content}</span>
                         </div>
                     ))}
+                    {loadingResponse ? <div className={styles.answer}><span className={styles.ai}>...</span></div> : ""}
                 </div>
                 <div>Current Prompt: {currentPrompt || "none"}</div>
                 <form onSubmit={onSubmit}>
