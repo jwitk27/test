@@ -1,14 +1,14 @@
-import Head from "next/head";
 import styles from "./index.module.css";
-import Link from "next/link";
 import { useState } from "react";
+import Header from "../components/header";
+import Prompt from "../components/prompt";
 
 export default function Home() {
     const [questionInput, setQuestionInput] = useState("");
     const [conversation, setConversation] = useState([]);
-    const [prompt, setPrompt] = useState("");
     const [currentPrompt, setCurrentPrompt] = useState("");
     const [loadingResponse, setLoadingResponse] = useState(false);
+    const [prompt, setPrompt] = useState("");
 
     async function onSubmit(event) {
         setLoadingResponse(true);
@@ -34,15 +34,13 @@ export default function Home() {
             const data = await response.json();
 
             setLoadingResponse(false);
-            
+
             if (response.status !== 200) {
                 throw data.error || new Error(`Request failed with status ${response.status}`);
             }
-            
-            const aiResponse = data.result;
 
             // Update the conversation state with the AI response
-            setConversation([...conversationData, aiResponse]);
+            setConversation([...conversationData, data.result]);
         } catch (error) {
             // Consider implementing your own error handling logic here
             console.error(error);
@@ -50,36 +48,29 @@ export default function Home() {
         }
     }
 
-    const setThePrompt = (e) => {
-        setConversation([]);
-        e.preventDefault();
-        setCurrentPrompt(prompt);
-        setPrompt("");
-    };
-
     return (
         <div>
-            <Head>
-                <title>JimboGPT</title>
-            </Head>
+            <Header title={"JimboGPT"} />
 
             <main className={styles.main}>
-                <h2>JimboGPT</h2>
                 <div className={styles.response}>
                     {conversation.map((message, index) => (
                         <div key={index} className={message.role === "user" ? styles.question : styles.answer}>
                             <span className={message.role === "user" ? styles.human : styles.ai}>{message.content}</span>
                         </div>
                     ))}
-                    {loadingResponse ? <div className={styles.answer}><span className={styles.ai}>...</span></div> : ""}
+                    {loadingResponse ? (
+                        <div className={styles.answer}>
+                            <span className={styles.ai}>...</span>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </div>
-                <div>Current Prompt: {currentPrompt || "none"}</div>
                 <form onSubmit={onSubmit}>
                     <input type="text" name="question" placeholder="Ask a question" value={questionInput} onChange={(e) => setQuestionInput(e.target.value)} />
                 </form>
-                <form onSubmit={setThePrompt}>
-                    <input type="text" name="prompt" placeholder="Enter a prompt" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-                </form>
+                <Prompt prompt={prompt} currentPrompt={currentPrompt} setPrompt={setPrompt} setCurrentPrompt={setCurrentPrompt} setConversation={setConversation} />
             </main>
         </div>
     );
