@@ -46,7 +46,7 @@
   border: 1px solid #10a37f;
   outline-color: #10a37f;
   border-radius: 5px;
-  margin-bottom: 1rem;
+  margin: .5rem 0;
 }
 .main ::placeholder {
   color: #8e8ea0;
@@ -60,35 +60,6 @@
   text-align: left;
   margin: 1rem 0;
   padding: 0;
-}
-.response {
-  width: 100%;
-  background-color: #333;
-  color: #fff;
-  padding: 1rem;
-  border-radius: 5px;
-  height: 60vh;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.human,
-.ai {
-  border-radius: 20px;
-  padding: .5rem 1rem;
-  display: inline-block;
-  margin-bottom: 1rem;
-}
-.human {
-  background-color: rgb(51, 192, 91);
-  text-align: left;
-}
-.ai {
-  background-color: rgb(128, 118, 118);
-}
-.question {
-  text-align: right;
 }
 .button {
   background-color: green;

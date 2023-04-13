@@ -1,7 +1,11 @@
 import styles from "./index.module.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "../components/header";
 import Prompt from "../components/prompt";
+import MessageList from "../components/messageList";
+import Message from "../components/message";
+import InputForm from "../components/inputForm";
+import "prismjs/themes/prism-tomorrow.css";
 
 export default function Home() {
     const [questionInput, setQuestionInput] = useState("");
@@ -9,6 +13,7 @@ export default function Home() {
     const [currentPrompt, setCurrentPrompt] = useState("");
     const [loadingResponse, setLoadingResponse] = useState(false);
     const [prompt, setPrompt] = useState("");
+    const responseDiv = useRef(null);
 
     async function onSubmit(event) {
         setLoadingResponse(true);
@@ -48,28 +53,22 @@ export default function Home() {
         }
     }
 
+    useEffect(() => {
+        const scrollToBottom = () => {
+            if (responseDiv.current) {
+                responseDiv.current.scrollTop = responseDiv.current.scrollHeight;
+            }
+        };
+
+        scrollToBottom();
+    }, [conversation]);
+
     return (
         <div>
             <Header title={"JimboGPT"} />
-
             <main className={styles.main}>
-                <div className={styles.response}>
-                    {conversation.map((message, index) => (
-                        <div key={index} className={message.role === "user" ? styles.question : styles.answer}>
-                            <span className={message.role === "user" ? styles.human : styles.ai}>{message.content}</span>
-                        </div>
-                    ))}
-                    {loadingResponse ? (
-                        <div className={styles.answer}>
-                            <span className={styles.ai}>...</span>
-                        </div>
-                    ) : (
-                        ""
-                    )}
-                </div>
-                <form onSubmit={onSubmit}>
-                    <input type="text" name="question" placeholder="Ask a question" value={questionInput} onChange={(e) => setQuestionInput(e.target.value)} />
-                </form>
+                <MessageList conversation={conversation} loadingResponse={loadingResponse} ref={responseDiv} />
+                <InputForm questionInput={questionInput} onSubmit={onSubmit} onInputChange={(e) => setQuestionInput(e.target.value)} />
                 <Prompt prompt={prompt} currentPrompt={currentPrompt} setPrompt={setPrompt} setCurrentPrompt={setCurrentPrompt} setConversation={setConversation} />
             </main>
         </div>

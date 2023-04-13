@@ -1,0 +1,17 @@
+.human,
+.ai {
+  border-radius: 20px;
+  padding: .5rem 1rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.human {
+  background-color: rgb(51, 192, 91);
+  text-align: left;
+}
+.ai {
+  background-color: rgb(135, 122, 122);
+}
+.question {
+  text-align: right;
+}
