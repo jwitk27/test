@@ -8,8 +8,8 @@ export default function Header({title}) {
             <Head>
                 <title>JimboGPT</title>
             </Head>
-            <Link className={styles.link} href="/">Home</Link>
-            <Link className={styles.link} href="/stocks">Stocks</Link>
+            {/* <Link className={styles.link} href="/">Home</Link>
+            <Link className={styles.link} href="/stocks">Stocks</Link> */}
             <h2 className={styles.pageHeader}>{title}</h2>
         </div>
     );

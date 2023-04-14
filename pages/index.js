@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import Header from "../components/header";
 import Prompt from "../components/prompt";
 import MessageList from "../components/messageList";
-import Message from "../components/message";
 import InputForm from "../components/inputForm";
 import "prismjs/themes/prism-tomorrow.css";
 
@@ -37,7 +36,7 @@ export default function Home() {
             });
 
             const data = await response.json();
-
+            console.log(data.result)
             setLoadingResponse(false);
 
             if (response.status !== 200) {

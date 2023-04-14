@@ -14,4 +14,12 @@
 }
 .question {
   text-align: right;
+  align-self: flex-end;
+}
+.question,
+.answer {
+  max-width: 90%;
+}
+.messageContent {
+  white-space: pre-wrap;
 }
